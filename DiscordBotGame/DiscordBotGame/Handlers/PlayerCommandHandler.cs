@@ -64,7 +64,7 @@ namespace DiscordBotGame
         [Handler("player")]
         public static string Player(string cmd, SocketUser user)
         {
-            if (!Program.WorldState.GameStarted) return "The game has not been started yet";
+            if (!Program.WorldState.GameStarted) return "The game has not been started yet.";
 
             var segs = Utils.ParseCmd(cmd);
             segs.RemoveAt(0);
@@ -78,7 +78,7 @@ namespace DiscordBotGame
         [Handler("players")]
         public static string Players(string cmd, SocketUser user)
         {
-            if (!Program.WorldState.GameStarted) return "The game has not been started yet";
+            if (!Program.WorldState.GameStarted) return "The game has not been started yet.";
             var sb = new StringBuilder();
             sb.AppendLine("Players");
             foreach (var player in Program.WorldState.Players)
@@ -93,7 +93,7 @@ namespace DiscordBotGame
         [Handler("attack")]
         public static string Attack(string cmd, SocketUser user)
         {
-            if (!Program.WorldState.GameStarted) return "The game has not been started yet";
+            if (!Program.WorldState.GameStarted) return "The game has not been started yet.";
             var segs = Utils.ParseCmd(cmd);
             segs.RemoveAt(0);
 
@@ -144,7 +144,7 @@ namespace DiscordBotGame
         [Handler("vote")]
         public static string Vote(string cmd, SocketUser user)
         {
-            if (!Program.WorldState.GameStarted) return "The game has not been started yet";
+            if (!Program.WorldState.GameStarted) return "The game has not been started yet.";
             var segs = Utils.ParseCmd(cmd);
             segs.RemoveAt(0);
 
@@ -179,7 +179,7 @@ namespace DiscordBotGame
         [Handler("gift")]
         public static string Gift(string cmd, SocketUser user)
         {
-            if (!Program.WorldState.GameStarted) return "The game has not been started yet";
+            if (!Program.WorldState.GameStarted) return "The game has not been started yet.";
             var segs = Utils.ParseCmd(cmd);
             segs.RemoveAt(0);
 
@@ -193,33 +193,33 @@ namespace DiscordBotGame
             var id = ulong.Parse(segs[0].Split('!').Last().Trim().TrimEnd('>'));
             if (Program.WorldState.Players.All(x => x.DiscordID != id))
             {
-                return $"The Target <@!{id}> has not joined the games!";
+                return $"The Target <@!{id}> has not joined the game yet!";
             }
 
             if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
             {
-                return $"The player <@!{user.Id}> has not joined the games!";
+                return $"The player <@!{user.Id}> has not joined the game yet!";
             }
 
             var target = Program.WorldState.Players.First(x => x.DiscordID == id);
             var self = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
 
-            if (self.Dead) return "You're dead; dead people can't do stuff";
-            if (target.Dead) return "You sad sad dude gifting to the dead";
+            if (self.Dead) return "You're dead; dead people can't do stuff.";
+            if (target.Dead) return "You sad sad dude, gifting to the dead.";
 
             if (self.DiscordID == target.DiscordID)
                 return
-                    "If you don't have friend to give stuff to, you might want consider working on finding some.";
+                    "If you don't have a friend to give stuff to, you might want consider working on finding some.";
 
             if (self.Tokens < amt)
-                return "You're out of bling. Can't give what you dont have";
+                return "You're out of bling. Can't give what you dont have.";
 
             if ((int)Math.Truncate(target.Position.DistanceTo(self.Position)) <= self.Range)
             {
                 target.Tokens += amt;
                 self.Tokens -= amt;
 
-                return $"You gave {amt} tokens to <@!{target.DiscordID}>";
+                return $"You gave {amt} tokens to <@!{target.DiscordID}>.";
             }
             else
             {
@@ -231,7 +231,7 @@ namespace DiscordBotGame
         [Handler("move")]
         public static string MoveCommand(string cmd, SocketUser user)
         {
-            if (!Program.WorldState.GameStarted) return "The game has not been started yet";
+            if (!Program.WorldState.GameStarted) return "The game has not been started yet.";
             if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
             {
                 return $"The player <@!{user.Id}> has not joined the game yet!";
@@ -243,7 +243,7 @@ namespace DiscordBotGame
             var dir = Enum.Parse<Direction>(segs[0], true);
 
             var p = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
-            if (p.Dead) return "Your dead. Dead people can't do stuff";
+            if (p.Dead) return "Your dead. Dead people can't do stuff.";
             switch (dir)
             {
                 case Direction.N:
@@ -299,7 +299,7 @@ namespace DiscordBotGame
                         (int) x.Position.X == (int) p.Position.X - 1 && (int) x.Position.Y == (int) p.Position.Y))
                     {
                         return
-                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give";
+                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
                     }
 
                     if (p.Tokens < 1)
@@ -429,7 +429,7 @@ namespace DiscordBotGame
         [Handler("join")]
         public static string JoinWorld(string cmd, SocketUser user)
         {
-            if (!Program.WorldState.GameStarted) return "The game has not been started yet";
+            if (!Program.WorldState.GameStarted) return "The game has not been started yet.";
 
             Vector3F FindFreeSpot()
             {
@@ -478,7 +478,7 @@ namespace DiscordBotGame
         [Handler("me")]
         public static string DumpMe(string cmd, SocketUser user)
         {
-            if (!Program.WorldState.GameStarted) return "The game has not been started yet";
+            if (!Program.WorldState.GameStarted) return "The game has not been started yet.";
             if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
             {
                 return $"The player <@!{user.Id}> has not joined the game yet!";
@@ -538,7 +538,7 @@ namespace DiscordBotGame
                 p.Tokens -= Program.WorldState.HealthUpgradeCost;
                 p.Health += 1;
                 return
-                    $"Cool. You paid {Program.WorldState.HealthUpgradeCost} for meds. Your HP is now {p.Health}";
+                    $"Cool. You paid {Program.WorldState.HealthUpgradeCost} for meds. Your HP is now {p.Health}.";
             }
             else
             {
